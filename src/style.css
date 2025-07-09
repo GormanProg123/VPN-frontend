@@ -1,1 +1,9 @@
 @import "tailwindcss";
+:root {
+  --form-background: #7277D8;
+}
+
+[data-scope='slider'][data-part='root'] {
+  display: flex;
+  flex-direction: column;
+}
