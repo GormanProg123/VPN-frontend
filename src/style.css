@@ -1,9 +1,9 @@
 @import "tailwindcss";
 :root {
-  --form-background: #7277D8;
+  --form-background: #7277d8;
 }
 
-[data-scope='slider'][data-part='root'] {
+[data-scope="slider"][data-part="root"] {
   display: flex;
   flex-direction: column;
 }
