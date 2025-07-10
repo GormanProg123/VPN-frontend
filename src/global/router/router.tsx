@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { Registration } from "../../pages/Registration";
+import { Registration } from "../../modules/Registration";
 import { LandingPage } from "../../pages/LandingPage";
 
 export const AppRoutes = () => {
