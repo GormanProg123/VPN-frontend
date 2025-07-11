@@ -69,9 +69,9 @@ export const RegistrationStepTwo = () => {
     return (
         <>
         
-            <form action={onSubmit} className=" pt-5">
+            <form onSubmit={onSubmit} className=" pt-10">
                 
-                <div className="flex flex-col w-120 mx-auto">
+                <div className="flex flex-col w-110 mx-auto">
                     <label htmlFor="password_input" className="text-white">Password</label>
                     <input onChange={(e) => setUserPassword1(e.target.value)} value={userPassword1}  id="password_input" type="password" className="bg-white rounded-lg hover:border py-1 px-2"  required/>
 
@@ -81,8 +81,8 @@ export const RegistrationStepTwo = () => {
         
             
         
-                <div className="flex justify-center pt-5">
-                    <button className="text-2xl bg-cyan-800 text-white font-bold hover:bg-cyan-900 py-2 px-20 rounded-xl cursor-pointer">Continue</button>  
+                <div className="flex justify-center pt-10">
+                    <button type="submit" className="text-2xl bg-[var(--button-background)] hover:bg-[var(--button-hover-background)]  text-white font-bold  py-2 px-20 rounded-xl cursor-pointer">Continue</button>  
                 </div>
             </form>
             

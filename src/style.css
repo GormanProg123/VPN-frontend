@@ -2,9 +2,13 @@
 @import "tailwindcss";
 :root {
   --form-background: #7277d8;
+  --button-background: #080E73;
+  --button-hover-background: #060a50;
 }
 
 [data-scope="slider"][data-part="root"] {
   display: flex;
   flex-direction: column;
 }
+
+
