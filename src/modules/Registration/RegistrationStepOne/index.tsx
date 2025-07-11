@@ -11,22 +11,21 @@ export const RegistrationStepOne = () => {
     const onSubmit = () => {
         dispatch(userData({email:userEmail,password:'',verificationCode:""}))
         dispatch(selectPage(2))
-        
     }
 
     return (
         <>
 
-            <form action={onSubmit} className=" pt-5">
+            <form onSubmit={onSubmit} className=" pt-10">
             
-                <div className="flex flex-col ">
+                <div className="flex flex-col w-110 mx-auto">
                     <label htmlFor="email_input" className="text-white">Email</label>
-                    <input id="email_input" type="email" name="email_input" onChange={(e) => setUserEmail(e.target.value)} value={userEmail} className="bg-white rounded-lg hover:border py-2 px-2"  required/>
+                    <input id="email_input" type="email" name="email_input" onChange={(e) => setUserEmail(e.target.value)} value={userEmail} className="bg-white rounded-lg hover:border py-1 px-2"  required/>
                 </div>
 
         
-                <div className="flex justify-center pt-5">
-                    <button className="text-2xl bg-cyan-800 text-white font-bold hover:bg-cyan-900 py-2 px-15 rounded-xl cursor-pointer">Continue</button>  
+                <div className="flex justify-center pt-10">
+                    <button type="submit" className="text-2xl bg-[var(--button-background)] hover:bg-[var(--button-hover-background)]  text-white font-bold  py-2 px-20 rounded-xl cursor-pointer">Continue</button>  
                 </div>
             </form>
            

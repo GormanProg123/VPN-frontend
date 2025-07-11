@@ -65,6 +65,8 @@ export const RegistrationStepThree = () => {
             console.log('account verified')
             verifyAccount({email:user.email,code:user.verificationCode})
             navigate('/')
+        } else {
+            alert('wrong code')
         }
         console.log(code)
     }
@@ -72,7 +74,7 @@ export const RegistrationStepThree = () => {
     return (
         <>
        
-            <form onSubmit={onSubmit} className=" pt-5">
+            <form onSubmit={onSubmit} className=" pt-10">
                 
                 
                 <div className="flex justify-center ">
@@ -96,8 +98,8 @@ export const RegistrationStepThree = () => {
                 </div>
                     
         
-                <div className="flex justify-center pt-5">
-                    <button type='submit' className="text-2xl bg-cyan-800 text-white font-bold hover:bg-cyan-900 py-2 px-15 rounded-xl cursor-pointer">Continue</button>  
+                <div className="flex justify-center pt-10">
+                    <button type='submit' className="text-2xl bg-[var(--button-background)] hover:bg-[var(--button-hover-background)] text-white font-bold  py-2 px-15 rounded-xl cursor-pointer">Continue</button>  
                 </div>
             </form>
             
