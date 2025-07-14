@@ -1,8 +1,8 @@
- /* @import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic); */
+/* @import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic); */
 @import "tailwindcss";
 :root {
   --form-background: #7277d8;
-  --button-background: #080E73;
+  --button-background: #080e73;
   --button-hover-background: #060a50;
 }
 
@@ -11,4 +11,13 @@
   flex-direction: column;
 }
 
+@font-face {
+  font-family: "Lemon";
+  src: url("/fonts/Lemon-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 
+.font-lemon {
+  font-family: "Lemon", cursive;
+}

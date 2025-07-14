@@ -1,6 +1,13 @@
 import pinLogo from "../../../../../shared/assets/Logo.svg";
+import { useNavigate } from "react-router";
 
 export const Header = () => {
+  const navigate = useNavigate();
+
+  const handleNavLog = () => {
+    navigate("/login");
+  };
+
   return (
     <header className="w-full h-[125px] bg-[#5863AF] flex items-center justify-between px-8">
       <div className="flex items-center space-x-4">
@@ -25,7 +32,10 @@ export const Header = () => {
           Support
         </a>
 
-        <button className="ml-[27px] w-[137px] h-[59px] bg-[#2F3485] text-white rounded-[30px] font-semibold text-[24px]">
+        <button
+          className="ml-[27px] w-[137px] h-[59px] bg-[#2F3485] text-white rounded-[30px] font-semibold text-[24px]"
+          onClick={handleNavLog}
+        >
           Log In
         </button>
       </div>
