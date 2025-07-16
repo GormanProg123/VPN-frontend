@@ -3,6 +3,12 @@ import { useNavigate } from "react-router";
 import { useSignInMutation } from "../../../global/api/auth/auth.api";
 import { validateLoginForm } from "../../../shared/validation/login.valid";
 
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 export const LogInForm = () => {
   const navigate = useNavigate();
   const [emailValue, setEmailValue] = useState("");
@@ -10,7 +16,23 @@ export const LogInForm = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
+  const [submitted, setSubmitted] = useState(false);
   const [signIn, { isLoading, error }] = useSignInMutation();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const handleNavReg = () => {
     navigate("/registration");
@@ -18,6 +40,7 @@ export const LogInForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitted(true);
 
     const formErrors = validateLoginForm({
       email: emailValue,
@@ -26,9 +49,7 @@ export const LogInForm = () => {
 
     setErrors(formErrors);
 
-    if (Object.keys(formErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(formErrors).length > 0) return;
 
     try {
       const result = await signIn({
@@ -49,7 +70,7 @@ export const LogInForm = () => {
         <span className="text-black">guine</span>
       </h3>
 
-      <div className="w-[620px] h-[560px] bg-[#818AA7]/70 rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg space-y-6">
+      <div className="w-[620px] h-[560px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg space-y-6">
         <h2 className="text-[40px] font-bold font-inter text-[#080809]">
           Log in
         </h2>
@@ -59,68 +80,108 @@ export const LogInForm = () => {
         </p>
 
         <form className="w-full space-y-6" onSubmit={handleSubmit}>
-          <div className="relative w-full mt-4">
-            <input
-              type="email"
-              name="email"
+          <div className="w-full mt-4">
+            <TextField
               id="email"
+              label="Email"
+              variant="outlined"
+              fullWidth
               value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
-              className={`
-                peer w-full border rounded-md px-3 pt-6 pb-2 bg-white 
-                text-black placeholder-transparent focus:outline-none 
-                focus:border-blue-500 focus:ring-1 focus:ring-blue-500
-              `}
-              placeholder="Email"
-              autoComplete="off"
+              onChange={(e) => {
+                const value = e.target.value;
+                setEmailValue(value);
+                const newErrors = validateLoginForm({
+                  email: value,
+                  password: passwordValue,
+                });
+                setErrors((prev) => ({
+                  ...prev,
+                  email: newErrors.email,
+                }));
+              }}
+              error={submitted && !!errors.email}
+              helperText={submitted ? errors.email : ""}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "6px",
+                "& label": {
+                  color: "#6b7280",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#d1d5db",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#3b82f6",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#3b82f6",
+                  },
+                },
+              }}
             />
-            <label
-              htmlFor="email"
-              className={`
-                absolute left-3 top-2 text-gray-500 text-sm 
-                transition-all bg-white px-1
-                peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:left-3 peer-placeholder-shown:text-gray-500
-                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-500
-                ${emailValue ? "top-2 text-sm text-blue-500" : ""}
-              `}
-            >
-              Email
-            </label>
-            {errors.email && (
-              <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-            )}
           </div>
 
-          <div className="relative w-full mt-4">
-            <input
-              type="password"
-              name="password"
+          <div className="w-full mt-4">
+            <TextField
               id="password"
+              label="Password"
+              variant="outlined"
+              type={showPassword ? "text" : "password"}
+              fullWidth
               value={passwordValue}
-              onChange={(e) => setPasswordValue(e.target.value)}
-              className={`
-                peer w-full border rounded-md px-3 pt-6 pb-2 bg-white 
-                text-black placeholder-transparent focus:outline-none 
-                focus:border-blue-500 focus:ring-1 focus:ring-blue-500
-              `}
-              placeholder="Password"
-              autoComplete="off"
+              onChange={(e) => {
+                const value = e.target.value;
+                setPasswordValue(value);
+                const newErrors = validateLoginForm({
+                  email: emailValue,
+                  password: value,
+                });
+                setErrors((prev) => ({
+                  ...prev,
+                  password: newErrors.password,
+                }));
+              }}
+              error={submitted && !!errors.password}
+              helperText={submitted ? errors.password : ""}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={
+                        showPassword
+                          ? "hide the password"
+                          : "display the password"
+                      }
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      onMouseUp={handleMouseUpPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "6px",
+                "& label": {
+                  color: "#6b7280",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#d1d5db",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#3b82f6",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#3b82f6",
+                  },
+                },
+              }}
             />
-            <label
-              htmlFor="password"
-              className={`
-                absolute left-3 top-2 text-gray-500 text-sm 
-                transition-all bg-white px-1
-                peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:left-3 peer-placeholder-shown:text-gray-500
-                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-500
-                ${passwordValue ? "top-2 text-sm text-blue-500" : ""}
-              `}
-            >
-              Password
-            </label>
-            {errors.password && (
-              <p className="text-red-600 text-sm mt-1">{errors.password}</p>
-            )}
           </div>
 
           <div className="flex justify-center">

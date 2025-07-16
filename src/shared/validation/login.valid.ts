@@ -1,12 +1,7 @@
-export interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
-export interface LoginFormErrors {
-  email?: string;
-  password?: string;
-}
+import type {
+  LoginFormValues,
+  LoginFormErrors,
+} from "../interfaces/logval.interface";
 
 export const validateLoginForm = (values: LoginFormValues): LoginFormErrors => {
   const errors: LoginFormErrors = {};
