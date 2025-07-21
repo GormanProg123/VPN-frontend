@@ -13,8 +13,35 @@ export const authApi = baseAuthApi.injectEndpoints({
         body: credentials,
       }),
     }),
+
+    signUp: build.mutation<
+      { token: string, verificationCode: string},
+      { email: string; password: string }
+    >({
+      query: (credentials) => ({
+        url: API_ENDPOINTS.AUTH_SIGN_UP,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
+    verify: build.mutation<
+      { token: string },
+      { email: string; code: string }
+    >({
+      query: (credentials) => ({
+        url: API_ENDPOINTS.AUTH_VERIFY,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
+
   }),
+
+
+  
   overrideExisting: false,
 });
 
-export const { useSignInMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation, useVerifyMutation } = authApi;
