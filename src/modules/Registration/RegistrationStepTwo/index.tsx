@@ -4,6 +4,10 @@ import { selectPage } from "../../../global/store/features/RegistrationPages/Reg
 import type { RootState } from "../../../global/store";
 import { userData } from "../../../global/store/features/RegistrationUser/RegistrationUserSlice";
 import { useSignUpMutation } from "../../../global/api/auth/auth.api";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdOutlineCancel } from "react-icons/md";
+import { GoCircle } from "react-icons/go";
+
 
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -30,7 +34,13 @@ export const RegistrationStepTwo = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
+    const [passError, setPassError] = useState('')
+    
+    const regexUpper = /[ABCDEFGHIKLMNOPQRSTVXYZ]/g
+    const regexSymb = /[!@#$]/g
+    const regexNumb = /[0-9]/g
 
+    console.log("dasda".match(regexUpper))
     const handleClickShowPassword = (e:number) => e == 1 ? setShowPassword((show) => !show) : setShowPassword2((show) => !show);
 
     const handleMouseDownPassword = (
@@ -54,15 +64,12 @@ export const RegistrationStepTwo = () => {
         password: userPassword1,
     });
 
-    // if(Object.keys(passwordErrors).length > 0){
-    //     alert(passwordErrors.password)
-    // }
-
     setErrors(passwordErrors)
     if (Object.keys(passwordErrors).length > 0) return;
 
+    
 
-    if(userPassword1 === userPassword2){
+    if(userPassword1 === userPassword2 && userPassword1.length > 8 && userPassword1.match(regexSymb) === null && userPassword1.match(regexNumb) !== null && userPassword1.match(regexUpper) !== null){
 
 
         try {
@@ -78,19 +85,24 @@ export const RegistrationStepTwo = () => {
         }
 
     } else {
-        alert("passwords don't match")   
+        if(userPassword1 !== userPassword2){
+            setPassError("passwords don't match")
+        } else {
+            setPassError("Your password is not following the rules >:[")
+        }
         
-    }
-
  
-  };
+    };
+
+    }
 
     return (
 
 
         
         <>
-        
+           
+            {passError && <p className="text-[16px] font-inter text-red-500 text-center mb-2">{passError}</p>}
             <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly  space-y-6">
             
                 <div className="flex flex-col">
@@ -110,11 +122,11 @@ export const RegistrationStepTwo = () => {
                                 });
                                 setErrors((prev) => ({
                                 ...prev,
-                                email: newErrors.email,
+                                password: newErrors.password,
                                 }));
                             }}
-                            error={submitted && !!errors.email}
-                            helperText={submitted ? errors.email : ""}
+                            error={submitted && !!errors.password}
+                            helperText={submitted ? errors.password : ""}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -142,7 +154,6 @@ export const RegistrationStepTwo = () => {
                                 color: "#6b7280",
                             },
                             "& .MuiInputBase-input":{
-                                // paddingTop: "10px",
                                 paddingBottom: "12px"
                             },
                             "& .MuiOutlinedInput-root": {
@@ -227,6 +238,115 @@ export const RegistrationStepTwo = () => {
                             }}
                         />
                     </div>
+
+                    <div className="check pt-5">
+                        <div className="flex items-center justify-center">
+                            {
+                                
+                                !userPassword1 && 
+                                <> 
+                                <GoCircle  className="mr-2"/>
+                                <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must be at least 8 characters.</p> 
+                                </>
+                            }
+                            {userPassword1 && (
+                            
+                                userPassword1.length < 8  ?
+                                <>
+                                    <MdOutlineCancel className="text-red-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-red-500 text-center ">Password must be at least 8 characters.</p>
+                                </>
+                                :
+                                <>
+                                    <IoMdCheckmarkCircleOutline className="text-green-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-green-500 text-center ">Password must be at least 8 characters.</p>
+                                </>
+
+                                )
+                            } 
+                        </div>
+                        <div className="flex items-center justify-center">
+                            {
+                                !userPassword1 && 
+                                <> 
+                                <GoCircle  className="mr-2"/>
+                                <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must exclude !@#$ symbols.</p> 
+                                </>
+                            
+                            }
+                            {userPassword1 && (
+                            
+                                userPassword1.match(regexSymb)  ?
+                                <>
+                                    <MdOutlineCancel className="text-red-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-red-500 text-center ">Password must exclude !@#$ symbols.</p>
+                                </>
+                                :
+                                <>
+                                    <IoMdCheckmarkCircleOutline className="text-green-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-green-500 text-center ">Password must exclude !@#$ symbols.</p>
+                                </>
+
+                                )
+                            } 
+                            
+                        </div>
+                        <div className="flex items-center justify-center">
+                            {
+                                !userPassword1 && 
+                                <> 
+                                <GoCircle  className="mr-2"/>
+                                <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must include a number.</p> 
+                                </>
+                               
+                            }
+                            {userPassword1 && (
+                            
+                                userPassword1.match(regexNumb) === null  ?
+                                <>
+                                    <MdOutlineCancel className="text-red-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-red-500 text-center ">Password must include a number.</p>
+                                </>
+                                :
+                                <>
+                                    <IoMdCheckmarkCircleOutline className="text-green-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-green-500 text-center ">Password must include a number.</p>
+                                </>
+
+                                )
+                            } 
+                            
+                        </div>
+                        <div className="flex items-center justify-center">
+                            {
+                                !userPassword1 &&  
+                                <> 
+                                <GoCircle  className="mr-2"/>
+                                <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must include at least one upper case character.</p> 
+                                </>
+                              
+                            }
+                            {userPassword1 && (
+                            
+                                userPassword1.match(regexUpper) === null ?
+                                <>
+                                    <MdOutlineCancel className="text-red-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-red-500 text-center ">Password must include at least one upper case character.</p>
+                                </>
+                                :
+                                <>
+                                    <IoMdCheckmarkCircleOutline className="text-green-600 mr-2"/>
+                                    <p className="text-[16px] font-inter text-green-500 text-center ">Password must include at least one upper case character.</p>
+                                </>
+
+                                )
+                            } 
+                            
+                        </div>
+                 
+                    </div>
+
+                
                 </div>
                     
 
