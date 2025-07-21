@@ -49,17 +49,21 @@ export const RegistrationStepTwo = () => {
     e.preventDefault();
     setSubmitted(true);
 
+
+    const passwordErrors = validatePasswordInRegisterForm({
+        password: userPassword1,
+    });
+
+    // if(Object.keys(passwordErrors).length > 0){
+    //     alert(passwordErrors.password)
+    // }
+
+    setErrors(passwordErrors)
+    if (Object.keys(passwordErrors).length > 0) return;
+
+
     if(userPassword1 === userPassword2){
 
-        const passwordErrors = validatePasswordInRegisterForm({
-            password: userPassword1,
-        });
-
-        if(Object.keys(passwordErrors).length > 0){
-            alert(passwordErrors.password)
-        }
-        
-        if (Object.keys(passwordErrors).length > 0) return;
 
         try {
         const result = await signUp({
@@ -87,11 +91,11 @@ export const RegistrationStepTwo = () => {
         
         <>
         
-            <form onSubmit={handleSubmit} className=" w-full space-y-6">
+            <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly  space-y-6">
             
-                    <div className="w-full mt-4" id="password_input" >
+                <div className="flex flex-col">
+                    <div className="w-full " id="password_input" >
                         <TextField
-                            
                             id="password1"
                             label="Password"
                             variant="outlined"
@@ -177,8 +181,8 @@ export const RegistrationStepTwo = () => {
                               email: newErrors.email,
                             }));
                           }}
-                            error={submitted && !!errors.email}
-                            helperText={submitted ? errors.email : ""}
+                            error={submitted && !!errors.password}
+                            helperText={submitted ? errors.password : ""}
                             InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -223,11 +227,13 @@ export const RegistrationStepTwo = () => {
                             }}
                         />
                     </div>
+                </div>
+                    
 
         
             
         
-              <div className="flex justify-center pt-5">
+              <div className="flex justify-center ">
                             <button
                               type="submit"
                               disabled={isLoading}

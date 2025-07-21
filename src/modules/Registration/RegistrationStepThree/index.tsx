@@ -33,6 +33,9 @@ export const RegistrationStepThree = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+
+
+
         if(user.verificationCode === code){
             try {
             const result = await verify({
@@ -57,7 +60,7 @@ export const RegistrationStepThree = () => {
     return (
         <>
        
-            <form onSubmit={handleSubmit} className=" pt-5 flex flex-col justify-evenly h-full">
+            <form onSubmit={handleSubmit} className=" flex flex-col justify-evenly h-full">
                 
      
                      
@@ -70,7 +73,7 @@ export const RegistrationStepThree = () => {
                         <input
                             key={index}
                             {...api.getInputProps({ index })}
-                            className="w-12 h-12 bg-white text-center text-xl border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                            className="w-12 h-12 bg-white text-center text-xl border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         />
                         ))}
                     </div>
@@ -78,7 +81,7 @@ export const RegistrationStepThree = () => {
                 </div>
   
                     
-                <div className="flex justify-center flex-col pt-5">
+                <div className="flex justify-center flex-col">
                     <button
                     type="submit"
                     disabled={isLoading}

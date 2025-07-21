@@ -10,7 +10,7 @@ export const Registration = () => {
     
     return (
         <>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 relative">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
             <h3 className="absolute top-10 text-[64px] font-lemon text-center">
                 <span className="text-[#060941]">VPN</span>
                 <span className="text-black">guine</span>

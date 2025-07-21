@@ -29,11 +29,11 @@ export const RegistrationStepOne = () => {
         });
     
 
-        if(Object.keys(formErrors).length > 0) {
-            alert(formErrors.email)
-        }
+  
+        setErrors(formErrors)
+
         if (Object.keys(formErrors).length > 0) return;
-    
+        
         dispatch(userData({email:emailValue,password:'',verificationCode:""}))
         dispatch(selectPage(2))
       };
@@ -45,9 +45,10 @@ export const RegistrationStepOne = () => {
 
 
 
-            <form onSubmit={handleSubmit} className=" w-full space-y-6">
+            <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly space-y-6">
             
-                          <div className="w-full mt-4">
+
+                          <div className="w-full ">
                             <TextField
                                
                               id="email"
@@ -76,7 +77,6 @@ export const RegistrationStepOne = () => {
                                   color: "#6b7280",
                                 },
                                 "& .MuiInputBase-input":{
-                                    // paddingTop: "10px",
                                     paddingBottom: "12px"
                                 },
                                 "& .MuiOutlinedInput-root": {
@@ -96,7 +96,7 @@ export const RegistrationStepOne = () => {
                           </div>
             
                 
-                          <div className="flex justify-center pt-5">
+                          <div className="flex justify-center ">
                             <button
                               type="submit"
                               className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"

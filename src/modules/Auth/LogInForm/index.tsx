@@ -64,7 +64,7 @@ export const LogInForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 relative">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
       <h3 className="absolute top-10 text-[64px] font-lemon text-center">
         <span className="text-[#060941]">VPN</span>
         <span className="text-black">guine</span>
@@ -103,11 +103,16 @@ export const LogInForm = () => {
               helperText={submitted ? errors.email : ""}
               sx={{
                 backgroundColor: "white",
-                borderRadius: "6px",
+                borderRadius: "12px",
+                boxShadow: "2px 8px 10px rgba(0, 0, 0, 0.15)",
                 "& label": {
                   color: "#6b7280",
                 },
+                "& .MuiInputBase-input":{
+                    paddingBottom: "12px"
+                },
                 "& .MuiOutlinedInput-root": {
+                borderRadius: "12px",
                   "& fieldset": {
                     borderColor: "#d1d5db",
                   },
@@ -165,11 +170,16 @@ export const LogInForm = () => {
               }}
               sx={{
                 backgroundColor: "white",
-                borderRadius: "6px",
+                borderRadius: "12px",
+                boxShadow: "2px 8px 10px rgba(0, 0, 0, 0.15)",
                 "& label": {
                   color: "#6b7280",
                 },
+                "& .MuiInputBase-input":{
+                    paddingBottom: "12px"
+                },
                 "& .MuiOutlinedInput-root": {
+                borderRadius: "12px",
                   "& fieldset": {
                     borderColor: "#d1d5db",
                   },
