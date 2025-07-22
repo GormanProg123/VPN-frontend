@@ -1,5 +1,4 @@
-import { ResetPasswordStepTwo } from "../../modules/Auth/ResetPassword/ResetPasswordStepTwo";
-
+import { ResetPasswordStepOne } from "../../modules/Auth/ResetPassword/ResetPasswordStepOne";
 export const ResetPage = () => {
-    return <ResetPasswordStepTwo />;
+    return <ResetPasswordStepOne />;
 }
