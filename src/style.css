@@ -23,7 +23,7 @@
 }
 
 .bg{ 
-  background-image: url(./shared/assets/backgorund.png);
+  background-image: url(./shared/assets/background.png);
   background-repeat: no-repeat;
   background-size: cover; 
   background-position: center; 

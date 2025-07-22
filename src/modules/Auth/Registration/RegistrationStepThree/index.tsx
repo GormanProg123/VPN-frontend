@@ -3,9 +3,9 @@ import * as pinInput from "@zag-js/pin-input"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { useId } from "react"
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../global/store';
+import type { RootState } from '../../../../global/store';
 import { useNavigate } from 'react-router';
-import { useVerifyMutation } from '../../../global/api/auth/auth.api';
+import { useVerifyMutation } from '../../../../global/api/auth/auth.api';
 
 
 export const RegistrationStepThree = () => {

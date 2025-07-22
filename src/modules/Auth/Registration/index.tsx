@@ -1,6 +1,6 @@
 
 import { useSelector } from "react-redux"
-import type { RootState } from "../../global/store"
+import type { RootState } from "../../../global/store"
 import { RegistrationStepOne } from "./RegistrationStepOne"
 import { RegistrationStepTwo } from "./RegistrationStepTwo"
 import { RegistrationStepThree } from "./RegistrationStepThree"

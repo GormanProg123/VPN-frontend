@@ -36,6 +36,28 @@ export const authApi = baseAuthApi.injectEndpoints({
       }),
     }),
 
+    request: build.mutation<
+      { token: string, tokenExpiry:string},
+      { email: string;  }
+    >({
+      query: (credentials) => ({
+        url: API_ENDPOINTS.AUTH_PASSWORD_REQUEST,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
+    reset: build.mutation<
+      { token: string },
+      { token: string; newPassword: string }
+    >({
+      query: (credentials) => ({
+        url: API_ENDPOINTS.AUTH_PASSWORD_RESET,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
 
   }),
 
@@ -44,4 +66,4 @@ export const authApi = baseAuthApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useSignInMutation, useSignUpMutation, useVerifyMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation, useVerifyMutation, useRequestMutation, useResetMutation  } = authApi;
