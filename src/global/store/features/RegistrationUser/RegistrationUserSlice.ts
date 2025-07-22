@@ -5,12 +5,16 @@ export interface User {
   email:string,
   password:string,
   verificationCode:string;
+  token:string;
+  tokenExpiry:string;
 }
 
 const initialState: User = {
   email:"",
   password:"",
-  verificationCode:""
+  verificationCode:"",
+  token:"",
+  tokenExpiry:""
 }
 
 export const registrationUserSlice = createSlice({
@@ -21,6 +25,8 @@ export const registrationUserSlice = createSlice({
         state.email = action.payload.email
         state.password = action.payload.password
         state.verificationCode = action.payload.verificationCode
+        state.token = action.payload.token
+        state.tokenExpiry = action.payload.tokenExpiry
         console.log(action.payload)
     },
   },

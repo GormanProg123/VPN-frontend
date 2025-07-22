@@ -1,22 +1,27 @@
 
-import { useDispatch } from "react-redux";
-import { selectPage } from "../../../global/store/features/RegistrationPages/RegistrationPagesSlice";
-import { userData } from "../../../global/store/features/RegistrationUser/RegistrationUserSlice";
+import { userData } from "../../../../global/store/features/RegistrationUser/RegistrationUserSlice";
 import { useState } from "react";
 
-import { validateEmailInRegisterForm } from "../../../shared/validation/register.valid";
+import { validateEmailInRegisterForm } from "../../../../shared/validation/register.valid";
 
 import TextField from "@mui/material/TextField";
+import { useRequestMutation } from "../../../../global/api/auth/auth.api";
+
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../../global/store";
 
 interface Errors {
     email?:string,
     password?:string
 }
 
-export const RegistrationStepOne = () => {
+export const ResetPasswordStepOne = () => {
     const [emailValue, setEmailValue] = useState<string>('')
     const [errors, setErrors] = useState<Errors>({});
     const [submitted, setSubmitted] = useState(false);
+    const [requestPasswordReset, { isLoading, }] = useRequestMutation();
+    const [message, setMessage] = useState(false);
+    const user = useSelector((state:RootState) => state.registrationUser)
 
     const dispatch = useDispatch();
 
@@ -33,18 +38,45 @@ export const RegistrationStepOne = () => {
         setErrors(formErrors)
 
         if (Object.keys(formErrors).length > 0) return;
-        
-        dispatch(userData({email:emailValue,password:'',verificationCode:""}))
-        dispatch(selectPage(2))
+
+
+        try {
+        const result = await requestPasswordReset({
+            email: emailValue,
+        }).unwrap();
+            console.log("link sent:", result);
+            dispatch(userData({email: emailValue, password: user.password, verificationCode: user.verificationCode, token:result.token, tokenExpiry:result.tokenExpiry}))
+            setMessage(true)
+          } catch (err) {
+            console.error("Failed to send link:", err);
+        }
+    
       };
 
    
 
     return (
         <>
+<div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
+            <h3 className="absolute top-3 text-[64px] font-lemon text-center">
+                <span className="text-[#060941]">VPN</span>
+                <span className="text-black">guine</span>
+            </h3>
 
+    
 
+            <div className="w-[660px] h-[500px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 ">
+                <div>
+                <h2 className="text-[40px] font-bold font-inter text-[#080809] mb-0 ">
+                    Password Reset
+                </h2>
 
+                  
+              
+        
+                </div>
+                
+            {message &&  <p className="text-[16px] font-inter text-[#2F3485] text-center ">Email has been sent to your email address with instructions on how to reset your password.</p>}
             <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly space-y-6">
             
 
@@ -95,17 +127,24 @@ export const RegistrationStepOne = () => {
                             />
                           </div>
             
-                
-                          <div className="flex justify-center ">
-                            <button
-                              type="submit"
-                              className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
-                            >
-                              Continue
-                            </button>
-                          </div>
+            <div className="flex justify-center mx-auto flex-col">
+                    <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
+                    >
+                    {isLoading ? "Loading..." : "Continue"}
+                    </button>
+                    
+                </div>
                       
             </form>
+            
+
+            </div>
+        </div>
+
+            
            
         </>
     )

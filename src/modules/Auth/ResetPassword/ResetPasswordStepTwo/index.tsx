@@ -1,13 +1,9 @@
 import {  useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
-import { selectPage } from "../../../global/store/features/RegistrationPages/RegistrationPagesSlice";
-import type { RootState } from "../../../global/store";
-import { userData } from "../../../global/store/features/RegistrationUser/RegistrationUserSlice";
-import { useSignUpMutation } from "../../../global/api/auth/auth.api";
+import { useResetMutation } from "../../../../global/api/auth/auth.api";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { GoCircle } from "react-icons/go";
-
+import { regexNumb, regexSymb, regexUpper } from "../../../../shared/interfaces/regval.interface";
 
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -15,32 +11,27 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import TextField from "@mui/material/TextField";
 
-import { validatePasswordInRegisterForm } from "../../../shared/validation/register.valid";
+import { validatePasswordInRegisterForm } from "../../../../shared/validation/register.valid";
+import type { Errors } from "../../../../shared/interfaces/regval.interface";
 
-interface Errors {
-    email?:string,
-    password?:string
-}
 
-export const RegistrationStepTwo = () => {
+
+
+export const ResetPasswordStepTwo  = ({ userToken, tokenExpiry }: { userToken: string, tokenExpiry: string }) => {
     const [userPassword1,setUserPassword1] = useState<string>('') 
     const [userPassword2,setUserPassword2] = useState<string>('') 
     const [errors, setErrors] = useState<Errors>({});
     const [submitted, setSubmitted] = useState(false);
-    const [signUp, { isLoading, }] = useSignUpMutation();
-
-    const user = useSelector((state:RootState) => state.registrationUser)
-    const dispatch = useDispatch(); 
+    const [changed, setChanged] = useState(false);
+    const [resetPassword, { isLoading, }] = useResetMutation();
+    const expiry = new Date(tokenExpiry)
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
-    const [passError, setPassError] = useState('')
+    const [passError, setPassError] = useState<string | boolean>()
     
-    const regexUpper = /[ABCDEFGHIKLMNOPQRSTVXYZ]/g
-    const regexSymb = /[!@#$]/g
-    const regexNumb = /[0-9]/g
 
-    console.log("dasda".match(regexUpper))
+
     const handleClickShowPassword = (e:number) => e == 1 ? setShowPassword((show) => !show) : setShowPassword2((show) => !show);
 
     const handleMouseDownPassword = (
@@ -73,15 +64,17 @@ export const RegistrationStepTwo = () => {
 
 
         try {
-        const result = await signUp({
-            email: user.email,
-            password: userPassword1,
+            setPassError('')
+        const result = await resetPassword({
+            token: userToken,
+            newPassword: userPassword1,
         }).unwrap();
-            console.log("Registered:", result);
-            dispatch(userData({email:user.email,password:userPassword1,verificationCode:result.verificationCode}))
-            dispatch(selectPage(3))   
+        
+            console.log("password changed:", result);
+            setPassError("")
+            setChanged(true)
         } catch (err) {
-            console.error("Failed to register:", err);
+            console.error("Failed to change password:", err);
         }
 
     } else {
@@ -91,19 +84,40 @@ export const RegistrationStepTwo = () => {
             setPassError("Your password is not following the rules >:[")
         }
         
- 
+    
     };
 
     }
-
+    
+    
     return (
-
-
-        
         <>
-           
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
+            <h3 className="absolute top-3 text-[64px] font-lemon text-center">
+                <span className="text-[#060941]">VPN</span>
+                <span className="text-black">guine</span>
+            </h3>
+
+    
+
+            <div className="w-[660px] h-[500px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 ">
+                <div>
+                    <h2 className="text-[40px] font-bold font-inter text-[#080809] mb-0 ">
+                        Password Reset
+                    </h2>
+                    <p className="text-[16px] font-inter text-[#2F3485] text-center ">Enter new password</p>
+                </div>
+                
+                
+        
             {passError && <p className="text-[16px] font-inter text-red-500 text-center mb-2">{passError}</p>}
-            <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly  space-y-6">
+            {changed && <p className="text-[16px] font-inter text-green-500 text-center mb-2 font-bold">Password successful changed!</p>}
+            
+
+            {
+                Number(expiry.getTime()) > Number(new Date().getTime()) ?
+
+                <form onSubmit={handleSubmit} className=" w-full h-full flex flex-col justify-evenly  space-y-6">
             
                 <div className="flex flex-col">
                     <div className="w-full " id="password_input" >
@@ -181,17 +195,17 @@ export const RegistrationStepTwo = () => {
                             type={showPassword2 ? "text" : "password"}
                             fullWidth
                             value={userPassword2}
-                          onChange={(e) => {
+                        onChange={(e) => {
                             const value = e.target.value;
                             setUserPassword2(value);
                             const newErrors = validatePasswordInRegisterForm({
-                              password:userPassword2 
+                            password:userPassword2 
                             });
                             setErrors((prev) => ({
-                              ...prev,
-                              email: newErrors.email,
+                            ...prev,
+                            email: newErrors.email,
                             }));
-                          }}
+                        }}
                             error={submitted && !!errors.password}
                             helperText={submitted ? errors.password : ""}
                             InputProps={{
@@ -298,7 +312,7 @@ export const RegistrationStepTwo = () => {
                                 <GoCircle  className="mr-2"/>
                                 <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must include a number.</p> 
                                 </>
-                               
+                            
                             }
                             {userPassword1 && (
                             
@@ -324,7 +338,7 @@ export const RegistrationStepTwo = () => {
                                 <GoCircle  className="mr-2"/>
                                 <p className="text-[16px] font-inter text-[#2F3485] text-center ">Password must include at least one upper case character.</p> 
                                 </>
-                              
+                            
                             }
                             {userPassword1 && (
                             
@@ -343,7 +357,7 @@ export const RegistrationStepTwo = () => {
                             } 
                             
                         </div>
-                 
+                
                     </div>
 
                 
@@ -353,17 +367,26 @@ export const RegistrationStepTwo = () => {
         
             
         
-              <div className="flex justify-center ">
+            <div className="flex justify-center ">
                             <button
-                              type="submit"
-                              disabled={isLoading}
-                              className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
                             >
-                              {isLoading ? "Loading..." : "Continue"}
+                            {isLoading ? "Loading..." : "Continue"}
                             </button>
-                </div>
-            </form>
+            </div>
+
+        </form>
+
+        : 
+            <p className="text-[32px] font-inter text-red-500 text-center font-bold">Link is expired</p>
+
+            }
             
+            
+            </div>
+        </div>
         </>
     )
 }
