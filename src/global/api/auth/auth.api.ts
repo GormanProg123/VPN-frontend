@@ -15,7 +15,7 @@ export const authApi = baseAuthApi.injectEndpoints({
     }),
 
     signUp: build.mutation<
-      { token: string, verificationCode: string},
+      { token: string; verificationCode: string },
       { email: string; password: string }
     >({
       query: (credentials) => ({
@@ -25,10 +25,7 @@ export const authApi = baseAuthApi.injectEndpoints({
       }),
     }),
 
-    verify: build.mutation<
-      { token: string },
-      { email: string; code: string }
-    >({
+    verify: build.mutation<{ token: string }, { email: string; code: string }>({
       query: (credentials) => ({
         url: API_ENDPOINTS.AUTH_VERIFY,
         method: "POST",
@@ -37,8 +34,8 @@ export const authApi = baseAuthApi.injectEndpoints({
     }),
 
     request: build.mutation<
-      { token: string, tokenExpiry:string},
-      { email: string;  }
+      { token: string; tokenExpiry: string },
+      { email: string; frontendUrl?: string }
     >({
       query: (credentials) => ({
         url: API_ENDPOINTS.AUTH_PASSWORD_REQUEST,
@@ -57,13 +54,15 @@ export const authApi = baseAuthApi.injectEndpoints({
         body: credentials,
       }),
     }),
-
-
   }),
 
-
-  
   overrideExisting: false,
 });
 
-export const { useSignInMutation, useSignUpMutation, useVerifyMutation, useRequestMutation, useResetMutation  } = authApi;
+export const {
+  useSignInMutation,
+  useSignUpMutation,
+  useVerifyMutation,
+  useRequestMutation,
+  useResetMutation,
+} = authApi;
