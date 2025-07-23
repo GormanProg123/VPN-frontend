@@ -108,11 +108,11 @@ export const LogInForm = () => {
                 "& label": {
                   color: "#6b7280",
                 },
-                "& .MuiInputBase-input":{
-                    paddingBottom: "12px"
+                "& .MuiInputBase-input": {
+                  paddingBottom: "12px",
                 },
                 "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
+                  borderRadius: "12px",
                   "& fieldset": {
                     borderColor: "#d1d5db",
                   },
@@ -175,11 +175,11 @@ export const LogInForm = () => {
                 "& label": {
                   color: "#6b7280",
                 },
-                "& .MuiInputBase-input":{
-                    paddingBottom: "12px"
+                "& .MuiInputBase-input": {
+                  paddingBottom: "12px",
                 },
                 "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
+                  borderRadius: "12px",
                   "& fieldset": {
                     borderColor: "#d1d5db",
                   },
@@ -226,7 +226,7 @@ export const LogInForm = () => {
             </a>
           </div>
           <div className="text-[#101AC3] font-bold">
-            <a href="#">Forgot your password?</a>
+            <a href="/reset-password">Forgot your password?</a>
           </div>
         </div>
       </div>
