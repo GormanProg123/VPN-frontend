@@ -60,7 +60,7 @@ export const RegistrationStepThree = () => {
     return (
         <>
        
-            <form onSubmit={handleSubmit} className=" flex flex-col justify-evenly h-full">
+            <form  className=" flex flex-col justify-evenly h-full mb-0">
                 
      
                      
@@ -81,9 +81,13 @@ export const RegistrationStepThree = () => {
                 </div>
   
                     
-                <div className="flex justify-center flex-col">
+             
+            </form>
+            
+           <div className="flex justify-center flex-col">
                     <button
                     type="submit"
+                    onClick={handleSubmit}
                     disabled={isLoading}
                     className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
                     >
@@ -91,9 +95,6 @@ export const RegistrationStepThree = () => {
                     </button>
                     <p className="text-[16px] font-inter text-[#2F3485] text-center pt-4">Haven’t obtained the code? <button className="text-blue-700 text-bold cursor-pointer">Sent again</button> </p>
                 </div>
-            </form>
-            
-        
           
               
         </>

@@ -18,6 +18,6 @@ export interface Errors {
 }
 
 
-export const regexUpper = /[ABCDEFGHIKLMNOPQRSTVXYZ]/g
+export const regexUpper = /[A-Z]/
 export const regexSymb = /[!@#$]/g
-export const regexNumb = /[0-9]/g
+export const regexNumb =  /\d/

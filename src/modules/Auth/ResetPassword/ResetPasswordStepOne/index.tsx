@@ -65,7 +65,7 @@ export const ResetPasswordStepOne = () => {
           <span className="text-black">guine</span>
         </h3>
 
-        <div className="w-[660px] h-[500px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 ">
+        <div className="w-[660px] h-[400px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 ">
           <div>
             <h2 className="text-[40px] font-bold font-inter text-[#080809] mb-0 ">
               Password Reset
@@ -78,12 +78,11 @@ export const ResetPasswordStepOne = () => {
               to reset your password.
             </p>
           )}
-          <form
-            onSubmit={handleSubmit}
-            className=" w-full h-full flex flex-col justify-evenly space-y-6"
-          >
+          <form  className=" w-full h-full flex flex-col justify-center space-y-6 mb-0">
+        
             <div className="w-full ">
               <TextField
+                  
                 id="email"
                 label="Email"
                 variant="outlined"
@@ -109,11 +108,11 @@ export const ResetPasswordStepOne = () => {
                   "& label": {
                     color: "#6b7280",
                   },
-                  "& .MuiInputBase-input": {
-                    paddingBottom: "12px",
+                  "& .MuiInputBase-input":{
+                      paddingBottom: "12px"
                   },
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "12px",
+                  borderRadius: "12px",
                     "& fieldset": {
                       borderColor: "#d1d5db",
                     },
@@ -127,17 +126,20 @@ export const ResetPasswordStepOne = () => {
                 }}
               />
             </div>
-
-            <div className="flex justify-center mx-auto flex-col">
+          
+                    
+          </form>
+            <div className="flex flex-col justify-center pb-3">
               <button
+                onClick={handleSubmit}
                 type="submit"
-                disabled={isLoading}
                 className="w-[344px] h-[48px] bg-[#080E73] text-white text-[20px] font-bold font-inter rounded-[10px]"
               >
-                {isLoading ? "Loading..." : "Continue"}
+               {isLoading ? "Loading..." : "Continue"} 
               </button>
+              
+              <p className="text-[16px] font-inter text-[#2F3485] text-center pt-2 ">Have account? <a className="text-blue-700 font-bold" href="http://localhost:5173/login">Log in</a> </p>
             </div>
-          </form>
         </div>
       </div>
     </>
