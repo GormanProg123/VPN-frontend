@@ -24,7 +24,7 @@ export const validatePasswordInRegisterForm = (value: RegistrationPasswordValue)
     if (!value.password.trim()) {
         errors.email = "Email is required";
     }
-    if(value.password.length <= 6){
+    if(value.password.length <= 8){
         errors.password = "Password is too short";
     }
 

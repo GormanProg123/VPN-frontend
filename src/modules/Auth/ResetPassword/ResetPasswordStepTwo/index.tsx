@@ -15,6 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import TextField from "@mui/material/TextField";
 
+
 import { validatePasswordInRegisterForm } from "../../../../shared/validation/register.valid";
 import type { Errors } from "../../../../shared/interfaces/regval.interface";
 
@@ -31,11 +32,28 @@ export const ResetPasswordStepTwo = ({
   const [submitted, setSubmitted] = useState(false);
   const [changed, setChanged] = useState(false);
   const [resetPassword, { isLoading }] = useResetMutation();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [passError, setPassError] = useState<string | boolean>("");
 
+  const requirements = [
+  {
+    label: "Password must be at least 8 characters.",
+    isValid: userPassword1.length >= 8,
+  },
+  {
+    label: "Password must exclude !@#$ symbols.",
+    isValid: !regexSymb.exec(userPassword1),
+  },
+  {
+    label: "Password must include a number.",
+    isValid: regexNumb.exec(userPassword1),
+  },
+  {
+    label: "Password must include at least one upper case character.",
+    isValid: regexUpper.exec(userPassword1),
+  },
+  ];
   const expiryTime = Number(tokenExpiry);
   const isLinkExpired =
     !tokenExpiry || isNaN(expiryTime) || expiryTime < Date.now();
@@ -88,6 +106,7 @@ export const ResetPasswordStepTwo = ({
         }).unwrap();
 
         console.log("password changed:", result);
+
         setPassError("");
         setChanged(true);
       } catch (err) {
@@ -103,6 +122,10 @@ export const ResetPasswordStepTwo = ({
     }
   };
 
+
+
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
       <h3 className="absolute top-3 text-[64px] font-lemon text-center">
@@ -110,7 +133,7 @@ export const ResetPasswordStepTwo = ({
         <span className="text-black">guine</span>
       </h3>
 
-      <div className="w-[660px] h-[500px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg space-y-6 ">
+      <div className="w-[660px] h-[540px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg space-y-6 ">
         <div>
           <h2 className="text-[40px] font-bold font-inter text-[#080809] mb-0 ">
             Password Reset
@@ -126,9 +149,13 @@ export const ResetPasswordStepTwo = ({
           </p>
         )}
         {changed && (
-          <p className="text-[16px] font-inter text-green-500 text-center mb-2 font-bold">
-            Password successfully changed!
-          </p>
+          <>
+            <p className="text-[16px] font-inter text-green-500 text-center mb-0 font-bold">
+              Password successfully changed!
+            </p>
+            <p className="text-[16px] font-inter text-[#2F3485] text-center mb-2 font-bold ">Now you can <a className="text-blue-700 font-bold" href="http://localhost:5173/login">Login</a>! </p>
+          </>
+
         )}
 
         {!isLinkExpired ? (
@@ -214,7 +241,6 @@ export const ResetPasswordStepTwo = ({
                   onChange={(e) => {
                     const value = e.target.value;
                     setUserPassword2(value);
-                    // нет смысла валидировать тут email, убрал
                   }}
                   error={submitted && !!errors.password}
                   helperText={submitted ? errors.password : ""}
@@ -261,114 +287,40 @@ export const ResetPasswordStepTwo = ({
                     },
                   }}
                 />
+
+
+                
               </div>
 
-              <div className="check pt-5">
-                <div className="flex items-center justify-center">
-                  {!userPassword1 && (
-                    <>
-                      <GoCircle className="mr-2" />
-                      <p className="text-[16px] font-inter text-[#2F3485] text-center ">
-                        Password must be at least 8 characters.
-                      </p>
-                    </>
-                  )}
-                  {userPassword1 &&
-                    (userPassword1.length < 8 ? (
-                      <>
-                        <MdOutlineCancel className="text-red-600 mr-2" />
-                        <p className="text-[16px] font-inter text-red-500 text-center ">
-                          Password must be at least 8 characters.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
-                        <p className="text-[16px] font-inter text-green-500 text-center ">
-                          Password must be at least 8 characters.
-                        </p>
-                      </>
+              
+                  <div className="flex justify-center">
+                      <div className="check pt-5 flex flex-col gap-2 ">
+                    
+                      {requirements.map((req, idx) => (
+                        <div key={idx} className="flex items-center ">
+                        {!userPassword1 ? (
+                            <>
+                                <GoCircle className="text-[#2F3485] mr-2" />
+                                <p className="text-[16px] font-inter text-[#2F3485] text-center">{req.label}</p>
+                            </>
+                        ) : (req.isValid ? (
+                            <>
+                                <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
+                                <p className="text-[16px] font-inter text-green-500 text-center">{req.label}</p>
+                            </>
+                        ) : (
+                            <>
+                                <MdOutlineCancel className="text-red-600 mr-2" />
+                                <p className="text-[16px] font-inter text-red-500 text-center">{req.label}</p>
+                            </>
+                        ))}
+                        </div>
                     ))}
-                </div>
-                <div className="flex items-center justify-center">
-                  {!userPassword1 && (
-                    <>
-                      <GoCircle className="mr-2" />
-                      <p className="text-[16px] font-inter text-[#2F3485] text-center ">
-                        Password must exclude !@#$ symbols.
-                      </p>
-                    </>
-                  )}
-                  {userPassword1 &&
-                    (userPassword1.match(regexSymb) ? (
-                      <>
-                        <MdOutlineCancel className="text-red-600 mr-2" />
-                        <p className="text-[16px] font-inter text-red-500 text-center ">
-                          Password must exclude !@#$ symbols.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
-                        <p className="text-[16px] font-inter text-green-500 text-center ">
-                          Password must exclude !@#$ symbols.
-                        </p>
-                      </>
-                    ))}
-                </div>
-                <div className="flex items-center justify-center">
-                  {!userPassword1 && (
-                    <>
-                      <GoCircle className="mr-2" />
-                      <p className="text-[16px] font-inter text-[#2F3485] text-center ">
-                        Password must include number.
-                      </p>
-                    </>
-                  )}
-                  {userPassword1 &&
-                    (userPassword1.match(regexNumb) ? (
-                      <>
-                        <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
-                        <p className="text-[16px] font-inter text-green-500 text-center ">
-                          Password must include number.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <MdOutlineCancel className="text-red-600 mr-2" />
-                        <p className="text-[16px] font-inter text-red-500 text-center ">
-                          Password must include number.
-                        </p>
-                      </>
-                    ))}
-                </div>
-                <div className="flex items-center justify-center">
-                  {!userPassword1 && (
-                    <>
-                      <GoCircle className="mr-2" />
-                      <p className="text-[16px] font-inter text-[#2F3485] text-center ">
-                        Password must include uppercase letter.
-                      </p>
-                    </>
-                  )}
-                  {userPassword1 &&
-                    (userPassword1.match(regexUpper) ? (
-                      <>
-                        <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
-                        <p className="text-[16px] font-inter text-green-500 text-center ">
-                          Password must include uppercase letter.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <MdOutlineCancel className="text-red-600 mr-2" />
-                        <p className="text-[16px] font-inter text-red-500 text-center ">
-                          Password must include uppercase letter.
-                        </p>
-                      </>
-                    ))}
-                </div>
-              </div>
+
+                    </div>
+                  </div>
+
+
             </div>
 
             <div className="w-full flex justify-center">

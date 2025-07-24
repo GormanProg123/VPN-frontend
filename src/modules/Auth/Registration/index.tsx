@@ -11,15 +11,15 @@ export const Registration = () => {
     return (
         <>
         <div className="flex items-center justify-center min-h-screen bg-gray-100 relative bg">
-            <h3 className="absolute top-3 text-[64px] font-lemon text-center">
+            <h3 className="absolute top-15 text-[64px] font-lemon text-center">
                 <span className="text-[#060941]">VPN</span>
                 <span className="text-black">guine</span>
             </h3>
 
     
 
-            <div className="w-[660px] h-[500px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 ">
-                <div>
+            <div className={`${currentPage === 1 || currentPage === 3  ? "h-[400px] " : "h-[500px]"} w-[660px] bg-white rounded-[30px] px-10 py-8 flex flex-col items-center justify-start shadow-lg shadow-lg space-y-6 `}>
+                <div className="mb-0">
                 <h2 className="text-[40px] font-bold font-inter text-[#080809] mb-0 ">
                     Create an account
                 </h2>
