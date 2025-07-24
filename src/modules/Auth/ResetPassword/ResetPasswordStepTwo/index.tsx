@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { useResetMutation } from "../../../../global/api/auth/auth.api";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import { MdOutlineCancel } from "react-icons/md";
-import { GoCircle } from "react-icons/go";
 import {
   regexNumb,
   regexSymb,
   regexUpper,
 } from "../../../../shared/interfaces/regval.interface";
+import { PasswordValidation } from "../../../../shared/components/PasswordValidation";
 
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import TextField from "@mui/material/TextField";
-
 
 import { validatePasswordInRegisterForm } from "../../../../shared/validation/register.valid";
 import type { Errors } from "../../../../shared/interfaces/regval.interface";
@@ -36,24 +33,6 @@ export const ResetPasswordStepTwo = ({
   const [showPassword2, setShowPassword2] = useState(false);
   const [passError, setPassError] = useState<string | boolean>("");
 
-  const requirements = [
-  {
-    label: "Password must be at least 8 characters.",
-    isValid: userPassword1.length >= 8,
-  },
-  {
-    label: "Password must exclude !@#$ symbols.",
-    isValid: !regexSymb.exec(userPassword1),
-  },
-  {
-    label: "Password must include a number.",
-    isValid: regexNumb.exec(userPassword1),
-  },
-  {
-    label: "Password must include at least one upper case character.",
-    isValid: regexUpper.exec(userPassword1),
-  },
-  ];
   const expiryTime = Number(tokenExpiry);
   const isLinkExpired =
     !tokenExpiry || isNaN(expiryTime) || expiryTime < Date.now();
@@ -292,33 +271,7 @@ export const ResetPasswordStepTwo = ({
                 
               </div>
 
-              
-                  <div className="flex justify-center">
-                      <div className="check pt-5 flex flex-col gap-2 ">
-                    
-                      {requirements.map((req, idx) => (
-                        <div key={idx} className="flex items-center ">
-                        {!userPassword1 ? (
-                            <>
-                                <GoCircle className="text-[#2F3485] mr-2" />
-                                <p className="text-[16px] font-inter text-[#2F3485] text-center">{req.label}</p>
-                            </>
-                        ) : (req.isValid ? (
-                            <>
-                                <IoMdCheckmarkCircleOutline className="text-green-600 mr-2" />
-                                <p className="text-[16px] font-inter text-green-500 text-center">{req.label}</p>
-                            </>
-                        ) : (
-                            <>
-                                <MdOutlineCancel className="text-red-600 mr-2" />
-                                <p className="text-[16px] font-inter text-red-500 text-center">{req.label}</p>
-                            </>
-                        ))}
-                        </div>
-                    ))}
-
-                    </div>
-                  </div>
+              <PasswordValidation password={userPassword1} />
 
 
             </div>
